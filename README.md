@@ -1,2 +1,3 @@
-# quiz-erika
+#Quiz-erika
 Proyecto Quiz
+Desarrollo de servicios en la nube con HTML5, Javascript y node.js
