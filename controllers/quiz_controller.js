@@ -31,7 +31,7 @@ exports.index = function(req, res){
 //  GET /quizes/:id
 exports.show = function(req, res){
     res.render('quizes/show', {quiz: req.quiz, errors: []});
-};
+}; //   req.quiz: instancia de quiz cargada con autolad
 
 //  GET /quizes/:id/answer
 exports.answer = function(req, res) {
@@ -82,4 +82,40 @@ exports.create = function(req, res) {
             .save({fields: ["pregunta", "respuesta"]})
             .then( function(){ res.redirect('/quizes')}) ;
     }
+};
+
+//  GET /quizes/:id/edit
+exports.edit = function(req, res) {
+    var quiz = req.quiz; //req.quiz: autoload de instancia de quiz
+
+    res.render('quizes/edit', {quiz:quiz, errors: []});
+};
+
+//  PUT /quizes/:id
+exports.update = function(req, res) {
+    req.quiz.pregunta = req.body.quiz.pregunta;
+    req.quiz.respuesta= req.body.quiz.respuesta;
+
+    req.quiz.validate();//then no funcionó con validate
+        /*.then(
+        function(err){
+            if(err){
+                res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+            } else {
+                req.quiz // save: guarda campos pregunta y respuesta en DB
+                    .save( {fields: ['pregunta', 'respuesta']})
+                    .then( function(){res.redirect('/quizes');});
+            }   //Redirecciona HTTP a lista de preguntas (URL relativo)
+        }
+    );*/
+    if (req.errors)
+    {
+        var i=0; var errores=new Array();//se convierte en [] con la propiedad message por compatibilidad con layout
+        for (var prop in errors) errores[i++]={message: errors[prop]};
+        res.render('quizes/edit', {quiz: teq.quiz, errors: errores});
+    } else {
+        req.quiz // save: guarda campos pregunta y respuesta en DB
+            .save({fields: ["pregunta", "respuesta"]})
+            .then( function(){ res.redirect('/quizes')}) ;
+    }   // Redirecciona HTTP a lista de preguntas (URL relativo)
 };
