@@ -50,7 +50,7 @@ exports.answer = function(req, res) {
 // GET /quizes/new
 exports.new = function(req, res) {
   var quiz = models.Quiz.build( //crea objeto Quiz
-    {pregunta: "Pregunta", respuesta: "Respuesta"}
+    {pregunta: "Pregunta", respuesta: "Respuesta", tema: "tema"}
   );
 
   res.render('quizes/new', {quiz: quiz, errors: []});
@@ -79,7 +79,7 @@ exports.create = function(req, res) {
         res.render('quizes/new', {quiz: quiz, errors: errores});
     } else {
         quiz // save: guarda en DB campos pregunta y respuesta de quiz
-            .save({fields: ["pregunta", "respuesta"]})
+            .save({fields: ["pregunta", "respuesta", 'tema']})
             .then( function(){ res.redirect('/quizes')});
     }
 };
@@ -95,6 +95,7 @@ exports.edit = function(req, res) {
 exports.update = function(req, res) {
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta= req.body.quiz.respuesta;
+    req.quiz.tema = req.body.quiz.tema;
 
     req.quiz.validate();//then no funcionó con validate
         /*.then(
@@ -115,7 +116,7 @@ exports.update = function(req, res) {
         res.render('quizes/edit', {quiz: teq.quiz, errors: errores});
     } else {
         req.quiz // save: guarda campos pregunta y respuesta en DB
-            .save({fields: ["pregunta", "respuesta"]})
+            .save({fields: ["pregunta", "respuesta", "tema"]})
             .then( function(){ res.redirect('/quizes')}) ;
     }   // Redirecciona HTTP a lista de preguntas (URL relativo)
 };
