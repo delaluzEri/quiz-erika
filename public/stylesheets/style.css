@@ -10,3 +10,5 @@ footer { background: #eee; text-align: center; }
 nav span { margin: 0px 10px 0px 0px; }
 #ErrorMsgs {color: #f61; font-size: smaller;}
 .right {float: right;}
+ul#statistics		{ margin: 25px 0; }
+ul#statistics li	{ padding: 5px 10px; border-bottom: 1px solid #999; list-style-type: none; }

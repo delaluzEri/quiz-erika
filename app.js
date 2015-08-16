@@ -28,6 +28,22 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Calculo tiempo de sesión
+app.use(function(req, res, next){
+	if(req.session.user){
+		if(!req.session.tiempoUser){
+			req.session.tiempoUser = (new Date()).getTime();
+		} else {
+			if((new Date()).getTime() - req.session.tiempoUser > 120000) {
+				delete req.session.user
+			} else { //el usuario continua con actividad ->nueva marca tiempo
+				req.session.tiempoUser =(new Date()).getTime();
+			}
+		}
+	}
+	next();
+});
+
 // Helpers dinamicos:
 app.use(function(req, res, next) {
 

@@ -11,6 +11,22 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
-    }
+    },
+      {
+          classMethods: {
+              countUnpublished: function () {
+                  return this.aggregate('QuizId', 'count', {'where': {'publicado': false}})
+                      .then('succes', function (count) {
+                          return count;
+                      })
+              },
+              countCommentedQuizes: function () {
+                  return this.aggregate('QuizId', 'count', {'distintc': true})
+                      .then('succes', function (count) {
+                          return count;
+                      })
+              }
+          }
+      }
   );
 }
